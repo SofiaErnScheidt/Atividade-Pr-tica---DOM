@@ -1,27 +1,50 @@
-let listaDeTarefas = []
-let lista, elementoLista, btExcluir
-function adicionarTarefa(){
-    listaDeTarefas.push(document.getElementById('id_tarefa').value)
-    localStorage.tarefa = JSON.stringify(listaDeTarefas)
+document.getElementById("bt_tarefa").addEventListener('click', addTarefa)
 
-    alert ("Tarefa adicionada com sucesso!")
+//inicializar uma lista vazia
 
-    lista = document.createElement('ol')
-    for(let i=0; i<listaDeTarefas.length; i++){
-        alert(listaDeTarefas[i])
-        elementoLista = document.createElement('li')
-        elementoLista.innerText = listaDeTarefas [i]
-        lista.append(elementoLista)
-        btExcluir = document.createElement('button')
-        btExcluir.setAttribute('id', 'bt', + i)
-        btExcluir.innerText = 'Excluir Tarefa' + (i+1)
-        btExcluir.body.append(btExcluir)
-        document.setAttribute('onclick' , 'excluirTarefa (' + i + ')')
+//verificar se existe uma lista no local Storage
+
+//fazer um laço for para cada tarefa, chamar a fuction addTarefa
+
+//quando add uma tarefa, add no local Storage também
+
+//quando remover uma tarefa, remover do local Storage também
+
+function addTarefa(){
+    //pegar o valor de dentro do input e armazenar em uma variavel
+    const inputTarefa = document.getElementById('input_tarefa').value
+    console.log(inputTarefa)
+
+    //verificar o valor do input e dar umalert se estiver vazio
+    if(!inputTarefa){
+        alert('o input esta vazio')
+        return
     }
-    document.body.append(lista)
-}
 
-function excluirTarefa(){
-    const index = array.indexOf(numTarefa);
-    listaDeTarefas.splice(index, 1)
+    //criar o elemento <li>
+    const elemento_tarefa = document.createElement('li')
+    elemento_tarefa.className = 'item_tarefa'
+
+    //adicionar o texto no input no novo <li>
+    const conteudoTarefa = document.createElement('p')
+    conteudoTarefa.textContent = inputTarefa
+
+    //adicionar um botão para deletar tarefa no novo <li>
+    const botaoDeletar = document.createElement('button')
+    botaoDeletar.textContent = 'Deletar Tarefa'
+    botaoDeletar.addEventListener('click' , () => {
+    elemento_tarefa.remove()
+    })
+    //adicionar um botão para completar a tarefa no novo <li>
+    const botaoCompletar = document.createElement('button')
+    botaoCompletar.textContent = 'Completar Tarefa'
+    botaoCompletar.addEventListener('click' , () => {
+        conteudoTarefa.classList.toggle('completada')
+    })
+
+    //adicionar um novo elemto <li> a tag <ul>
+    elemento_tarefa.appendChild(conteudoTarefa)
+    elemento_tarefa.appendChild(botaoDeletar)
+    elemento_tarefa.appendChild(botaoCompletar)
+    document.getElementById('lista_tarefas').appendChild(elemento_tarefa)
 }
