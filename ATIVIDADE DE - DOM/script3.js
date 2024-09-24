@@ -1,14 +1,16 @@
 document.getElementById("bt_tarefa").addEventListener('click', addTarefa)
 
-//inicializar uma lista vazia
+//não permitir duas tarefas iguais
 
-//verificar se existe uma lista no local Storage
+// limpar o input quando add uma tarefa
+
+// procura as atrefas no local storage ou inicializa vazio
+let listaTarefas = JSON.parse(localStorage.getItem('tarefas'))  || []
 
 //fazer um laço for para cada tarefa, chamar a fuction addTarefa
-
-//quando add uma tarefa, add no local Storage também
-
-//quando remover uma tarefa, remover do local Storage também
+listaTarefas.forEach(element => {
+    criarElemento(element)
+});
 
 function addTarefa(){
     //pegar o valor de dentro do input e armazenar em uma variavel
@@ -17,10 +19,17 @@ function addTarefa(){
 
     //verificar o valor do input e dar umalert se estiver vazio
     if(!inputTarefa){
-        alert('o input esta vazio')
-        return
     }
+    
+    //adiciona tarefa no array de tarefas
+    listaTarefas.push(inputTarefa)
 
+    //transforma o array em string e coloca a lista de tarefas no local storage
+    localStorage.setItem('tarefas' , JSON.stringify(listaTarefas))
+    criarElemento(inputTarefa)
+}
+
+function criarElemento(inputTarefa){
     //criar o elemento <li>
     const elemento_tarefa = document.createElement('li')
     elemento_tarefa.className = 'item_tarefa'
@@ -31,10 +40,21 @@ function addTarefa(){
 
     //adicionar um botão para deletar tarefa no novo <li>
     const botaoDeletar = document.createElement('button')
+
+
     botaoDeletar.textContent = 'Deletar Tarefa'
     botaoDeletar.addEventListener('click' , () => {
-    elemento_tarefa.remove()
+
+        //remove o elemento tarefa da tela
+        elemento_tarefa.remove()
+
+        //filtra a tarefa a ser removida
+        listaTarefas = listaTarefas.filter ((tarefa) => tarefa !== inputTarefa)
+
+        //salva novamente a lista de tarefas no local-storage
+        localStorage.setItem('tarefas' , JSON.stringify(listaTarefas))
     })
+
     //adicionar um botão para completar a tarefa no novo <li>
     const botaoCompletar = document.createElement('button')
     botaoCompletar.textContent = 'Completar Tarefa'
